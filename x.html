@@ -1,0 +1,153 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Storage Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+        }
+        label, input, select {
+            display: block;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Crop Storage Information</h1>
+
+    <form id="cropForm">
+        <label for="cropName">Crop Name:</label>
+        <input type="text" id="cropName" required>
+
+        <label for="season">Season:</label>
+        <select id="season" required>
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+            <option value="autumn">Autumn</option>
+            <option value="winter">Winter</option>
+        </select>
+
+        <label for="zone">Zone:</label>
+        <input type="text" id="zone" required>
+
+        <button type="button" onclick="saveCropInformation()">Save Information</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        function saveCropInformation() {
+            const cropName = document.getElementById('cropName').value;
+            const season = document.getElementById('season').value;
+            const zone = document.getElementById('zone').value;
+
+            // You can send this information to a server for storage using AJAX/fetch
+            // For simplicity, we will just display the information here
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = `<p>Information saved:</p>
+                                   <p><strong>Crop Name:</strong> ${cropName}</p>
+                                   <p><strong>Season:</strong> ${season}</p>
+                                   <p><strong>Zone:</strong> ${zone}</p>`;
+        }
+    </script>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Cold Storages Near You</title>
+    <!-- Include the Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find Cold Storages Near You</h1>
+    
+    <div>
+        <label for="location">Your Location:</label>
+        <input type="text" id="location" placeholder="Enter your location">
+        <button onclick="searchNearbyColdStorages()">Search</button>
+    </div>
+
+    <div id="map"></div>
+
+    <script>
+        function initMap() {
+            // Initialize the map
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 0, lng: 0},
+                zoom: 15
+            });
+
+            // Initialize the places service
+            var service = new google.maps.places.PlacesService(map);
+
+            // Function to search for nearby cold storages
+            window.searchNearbyColdStorages = function() {
+                var locationInput = document.getElementById('location');
+                var location = locationInput.value;
+
+                // Use the Places API to search for cold storages near the entered location
+                service.textSearch({
+                    query: 'cold storage',
+                    location: map.getCenter(),
+                    radius: 5000  // You can adjust the radius as needed
+                }, function(results, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        // Clear previous markers
+                        markers.forEach(marker => marker.setMap(null));
+                        markers = [];
+
+                        // Display markers for each cold storage found
+                        for (var i = 0; i < results.length; i++) {
+                            createMarker(results[i]);
+                        }
+                    }
+                });
+            };
+
+            // Function to create a marker for a place
+            function createMarker(place) {
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location,
+                    title: place.name
+                });
+
+                markers.push(marker);
+            }
+
+            // Array to store markers
+            var markers = [];
+        }
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap"></script>
+</body>
+</html>

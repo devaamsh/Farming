@@ -1,0 +1,14 @@
+h2{
+    font-family: 'Playfair Display', serif;
+}
+h1{
+    font-family: 'Playfair Display', serif;
+}
+p{
+    font-family: 'Bitter', serif;
+}
+body{
+    background-image: url(farm.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
